@@ -1,174 +1,49 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chat - IA en Marketing Digital</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💬</text></svg>">
   <style>
-    :root {
-      --primary: #6a93cb;
-      --light: #e6f0fa;
-      --violet: #b19cd9;
-      --text: #2c3e50;
-      --border: #c5d7eb;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body {
-      background: var(--light);
-      padding: 16px;
-      max-width: 600px;
-      margin: 0 auto;
-      color: var(--text);
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { background: #f0f8ff; padding: 16px; max-width: 600px; margin: 0 auto; }
     #login, #nameForm, #chat { display: none; }
-    #login.active, #nameForm.active, #chat.active { display: block; animation: fadeIn 0.5s; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    h2 {
-      text-align: center;
-      margin: 16px 0 24px;
-      color: var(--primary);
-      font-size: 1.4rem;
-    }
-    .login-title {
-      font-size: 1.2rem;
-      margin-bottom: 24px;
-      color: var(--text);
-      line-height: 1.4;
-    }
-    .input-group {
-      position: relative;
-      margin: 12px 0;
-    }
-    input, textarea, button {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-    input:focus, textarea:focus {
-      outline: 2px solid var(--primary);
-    }
-    .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: var(--primary);
-      cursor: pointer;
-      font-size: 1.2rem;
-    }
-    button {
-      background: var(--primary);
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background: #5a82ba;
-    }
-    .logout-btn {
-      background: #e74c3c !important;
-    }
-    .logout-btn:hover {
-      background: #c0392b !important;
-    }
-
-    #messages {
-      height: 60vh;
-      overflow-y: auto;
-      border: 1px solid var(--border);
-      padding: 16px;
-      margin: 16px 0;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .message {
-      padding: 10px 0;
-      border-bottom: 1px solid #f0f4f8;
-    }
-    .message:last-child {
-      border-bottom: none;
-    }
-    .message strong {
-      color: var(--violet);
-      margin-right: 6px;
-    }
-    .message a {
-      color: var(--primary);
-      word-break: break-all;
-    }
-    .message img {
-      max-width: 100%;
-      height: auto;
-      margin-top: 6px;
-      border-radius: 6px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    #imagePreview {
-      max-width: 100%;
-      display: none;
-      margin: 12px 0;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    footer {
-      text-align: center;
-      margin-top: 20px;
-      color: #7f8c8d;
-      font-size: 0.9rem;
-    }
+    #login.active, #nameForm.active, #chat.active { display: block; }
+    h2 { text-align: center; margin: 16px 0; color: #2c3e50; }
+    input, button, textarea { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 6px; }
+    button { background: #3498db; color: white; font-weight: bold; cursor: pointer; }
+    #messages { height: 60vh; overflow-y: auto; border: 1px solid #ddd; padding: 12px; margin: 12px 0; background: white; }
+    .message { padding: 8px 0; border-bottom: 1px solid #eee; }
+    .message strong { color: #8e44ad; }
+    #imagePreview { max-width: 100%; display: none; margin: 8px 0; }
   </style>
 </head>
 <body>
 
-  <!-- Pantalla de login -->
   <div id="login" class="active">
-    <h2>💬 Entrar al grupo de clase</h2>
-    <p class="login-title">Inteligencia Artificial aplicada al Marketing Digital</p>
-    <div class="input-group">
-      <input type="email" id="email" placeholder="Correo (ej: alumno1@clase2025.app)" required />
-    </div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="Contraseña" required />
-      <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
-    </div>
+    <h2>🔐 Inicia sesión</h2>
+    <input type="email" id="email" placeholder="Correo (ej: alumno1@clase2025.app)" required />
+    <input type="password" id="password" placeholder="Tu contraseña" required />
     <button onclick="login()">Entrar</button>
-    <p id="error" style="color: #e74c3c; text-align: center; margin-top: 12px;"></p>
+    <p id="error" style="color: red; text-align: center;"></p>
   </div>
 
-  <!-- Pantalla para poner nombre real -->
   <div id="nameForm">
     <h2>👋 ¿Cómo te llamas?</h2>
-    <div class="input-group">
-      <input type="text" id="userName" placeholder="Tu nombre real (ej: Josefa)" required />
-    </div>
+    <input type="text" id="userName" placeholder="Tu nombre real" required />
     <button onclick="saveName()">Guardar nombre</button>
-    <p id="nameError" style="color: #e74c3c; text-align: center; margin-top: 12px;"></p>
+    <p id="nameError" style="color: red; text-align: center;"></p>
   </div>
 
-  <!-- Chat -->
   <div id="chat">
     <h2>💬 Chat del grupo</h2>
     <div id="messages"></div>
-    <input type="file" id="imageInput" accept="image/*" style="margin: 12px 0;" />
+    <input type="file" id="imageInput" accept="image/*" />
     <img id="imagePreview" />
-    <textarea id="messageInput" placeholder="Escribe un mensaje... (puedes pegar enlaces)"></textarea>
+    <textarea id="messageInput" placeholder="Escribe un mensaje..."></textarea>
     <button onclick="sendMessage()">Enviar</button>
-    <button onclick="logout()" class="logout-btn">Salir</button>
+    <button onclick="logout()" style="background: #e74c3c;">Salir</button>
   </div>
-
-  <footer>
-    © 2025 • Grupo de Clase • IA en Marketing Digital
-  </footer>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -177,7 +52,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
   <script>
-    // 🔑 CONFIGURACIÓN DE TU PROYECTO (¡ya con tus datos reales!)
+    // 🔑 CONFIGURACIÓN CORRECTA DE TU PROYECTO
     const firebaseConfig = {
       apiKey: "AIzaSyCNGjqxTLmI8g7uLm8WmR5rFMbXozMokmw",
       authDomain: "chat-web-2025.firebaseapp.com",
@@ -187,35 +62,25 @@
       appId: "1:327898037440:web:aa1da7cc203cb4cb294125"
     };
 
+    // Inicializar Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
     const storage = firebase.storage();
 
-    // Mostrar/ocultar contraseña
-    function togglePassword() {
-      const pass = document.getElementById('password');
-      const type = pass.type === 'password' ? 'text' : 'password';
-      pass.type = type;
-    }
-
     // Login
     async function login() {
-      const email = document.getElementById('email').value.trim();
+      const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const errorEl = document.getElementById('error');
-      errorEl.innerText = '';
       try {
-        if (!email || !password) throw new Error("Completa ambos campos");
         await auth.signInWithEmailAndPassword(email, password);
         checkIfNameExists();
       } catch (e) {
-        errorEl.innerText = "Correo o contraseña incorrectos";
-        console.error(e);
+        document.getElementById('error').innerText = "Correo o contraseña incorrectos";
       }
     }
 
-    // Verificar nombre
+    // Verificar si ya puso nombre
     async function checkIfNameExists() {
       const user = auth.currentUser;
       const userDoc = await db.collection('usuarios').doc(user.uid).get();
@@ -232,12 +97,7 @@
     // Guardar nombre
     async function saveName() {
       const nombre = document.getElementById('userName').value.trim();
-      const errorEl = document.getElementById('nameError');
-      errorEl.innerText = '';
-      if (!nombre) {
-        errorEl.innerText = "Por favor, escribe tu nombre";
-        return;
-      }
+      if (!nombre) return;
       try {
         const user = auth.currentUser;
         await db.collection('usuarios').doc(user.uid).set({ nombre }, { merge: true });
@@ -245,12 +105,11 @@
         document.getElementById('chat').classList.add('active');
         loadMessages();
       } catch (e) {
-        errorEl.innerText = "Error al guardar el nombre";
-        console.error(e);
+        document.getElementById('nameError').innerText = "Error al guardar";
       }
     }
 
-    // Cerrar sesión
+    // Salir
     function logout() {
       auth.signOut();
       document.getElementById('chat').classList.remove('active');
@@ -269,14 +128,7 @@
           const div = document.createElement('div');
           div.className = 'message';
           let txt = `<strong>${nombre}:</strong> ${m.text || ''}`;
-          
-          // Detectar enlaces
-          const urlRegex = /(https?:\/\/[^\s]+)/g;
-          txt = txt.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
-          
-          if (m.imageUrl) {
-            txt += `<br><img src="${m.imageUrl}" alt="Imagen del chat">`;
-          }
+          if (m.imageUrl) txt += `<br><img src="${m.imageUrl}" style="max-width:100%">`;
           div.innerHTML = txt;
           messagesDiv.appendChild(div);
         }
@@ -285,18 +137,17 @@
     }
 
     // Previsualizar imagen
-    function previewImage(e) {
+    document.getElementById('imageInput').addEventListener('change', (e) => {
       const [file] = e.target.files;
       if (file) {
         const reader = new FileReader();
-        reader.onload = ev => {
+        reader.onload = (ev) => {
           document.getElementById('imagePreview').src = ev.target.result;
           document.getElementById('imagePreview').style.display = 'block';
         };
         reader.readAsDataURL(file);
       }
-    }
-    document.getElementById('imageInput').addEventListener('change', previewImage);
+    });
 
     // Enviar mensaje
     async function sendMessage() {
@@ -324,14 +175,6 @@
         document.getElementById('imagePreview').style.display = 'none';
       }
     }
-
-    // Permitir Enter para enviar (sin salto de línea)
-    document.getElementById('messageInput').addEventListener('keypress', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
   </script>
 </body>
 </html>
